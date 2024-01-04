@@ -1,4 +1,4 @@
-package com.benruehl.plugins
+package com.benruehl.api
 
 import io.ktor.serialization.kotlinx.json.*
 import io.ktor.server.application.*

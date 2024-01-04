@@ -1,6 +1,7 @@
 package com.benruehl
 
-import com.benruehl.plugins.*
+import com.benruehl.api.*
+import com.benruehl.infrastructure.persistence.configurePersistence
 import io.ktor.server.application.*
 import io.ktor.server.engine.*
 import io.ktor.server.netty.*
@@ -11,6 +12,7 @@ fun main() {
 }
 
 fun Application.module() {
+    configurePersistence()
     configureSerialization()
     configureRouting()
 }

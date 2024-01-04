@@ -1,6 +1,6 @@
 package com.benruehl
 
-import com.benruehl.plugins.*
+import com.benruehl.api.*
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
