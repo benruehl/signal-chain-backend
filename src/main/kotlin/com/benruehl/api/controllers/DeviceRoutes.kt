@@ -38,8 +38,8 @@ fun Route.deviceRouting() {
 
         post {
             val device = call.receive<SaveDeviceRequest>()
-            deviceService.create(device)
-            call.respond(Created, device)
+            val createdDevice = deviceService.create(device)
+            call.respond(Created, createdDevice)
         }
 
         put("{id?}") {
