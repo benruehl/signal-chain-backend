@@ -1,7 +1,10 @@
 package com.benruehl
 
 import com.benruehl.infrastructure.persistence.tables.Devices
+import io.ktor.client.*
 import io.ktor.client.statement.*
+import io.ktor.serialization.kotlinx.json.*
+import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.server.testing.*
 import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.json.Json
@@ -10,7 +13,7 @@ import org.jetbrains.exposed.sql.transactions.transaction
 
 fun setupApplication(
     configureApplication: suspend () -> Unit = { },
-    performTest: suspend ApplicationTestBuilder.() -> Unit
+    performTest: suspend ApplicationTestBuilder.(client: HttpClient) -> Unit
 ) = testApplication {
     application {
         module()
@@ -19,7 +22,12 @@ fun setupApplication(
             configureApplication()
         }
     }
-    performTest()
+    val client = createClient {
+        install(ContentNegotiation) {
+            json()
+        }
+    }
+    performTest(client)
 }
 
 private fun clearDatabase() {

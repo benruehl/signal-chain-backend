@@ -1,6 +1,7 @@
 package com.benruehl.api.controllers
 
 import com.benruehl.application.dtos.QueryDeviceResponse
+import com.benruehl.application.dtos.SaveDeviceRequest
 import com.benruehl.bodyDeserializedAs
 import com.benruehl.domain.entities.Device
 import com.benruehl.infrastructure.persistence.daos.DeviceDAO
@@ -8,6 +9,7 @@ import com.benruehl.setupApplication
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
+import io.ktor.http.ContentType.Application.Json
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
@@ -20,6 +22,18 @@ class DeviceRoutesTest {
         client.get("/devices").apply {
             assertEquals(HttpStatusCode.OK, status)
             assertEquals("[]", bodyAsText())
+        }
+    }
+
+    @Test
+    fun `GET all devices should return array when devices exist`() = setupApplication({
+        deviceRepository.save(aDevice.copy(id = 1))
+        deviceRepository.save(aDevice.copy(id = 2))
+        deviceRepository.save(aDevice.copy(id = 3))
+    }) {
+        client.get("/devices").apply {
+            val response = bodyDeserializedAs<List<QueryDeviceResponse>>()
+            assertEquals(response.size, 3)
         }
     }
 
@@ -42,10 +56,28 @@ class DeviceRoutesTest {
         }
     }
 
+    @Test
+    fun `POST device should return device with id`() = setupApplication { client ->
+        client.post("/devices") {
+            setBody(aDevice.toRequestBody())
+            contentType(Json)
+        }.apply {
+            val response = bodyDeserializedAs<QueryDeviceResponse>()
+            assertEquals(HttpStatusCode.Created, status)
+            assertEquals(1, response.id)
+        }
+    }
+
     private val aDevice = Device(
         123,
         "Any Title",
         100f,
         100f
+    )
+
+    private fun Device.toRequestBody() = SaveDeviceRequest(
+        title = this.title,
+        positionX = this.positionX,
+        positionY = this.positionY
     )
 }

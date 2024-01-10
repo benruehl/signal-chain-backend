@@ -36,4 +36,5 @@ dependencies {
     implementation("com.h2database:h2:$h2_version")
     testImplementation("io.ktor:ktor-server-tests-jvm")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version")
+    testImplementation("io.ktor:ktor-client-content-negotiation")
 }
