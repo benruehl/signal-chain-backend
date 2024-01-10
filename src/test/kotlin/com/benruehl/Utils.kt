@@ -22,6 +22,11 @@ fun setupApplication(
             configureApplication()
         }
     }
+
+    // Configure client here and pass to tests.
+    // Better would be to configure the build-in client of
+    // ApplicationTestBuilder but this is currently not supported.
+    // See https://youtrack.jetbrains.com/issue/KTOR-4005/testApplication-Having-shared-HTTP-client-for-each-test
     val client = createClient {
         install(ContentNegotiation) {
             json()

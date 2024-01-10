@@ -1,4 +1,4 @@
-package com.benruehl.infrastructure.persistence.daos;
+package com.benruehl.infrastructure.persistence.daos
 
 import com.benruehl.domain.repositories.DeviceRepository
 import com.benruehl.domain.entities.Device
