@@ -53,8 +53,8 @@ fun Route.deviceRouting() {
                 )
             }
             val device = call.receive<SaveDeviceRequest>()
-            deviceService.update(id, device)
-            call.respond(device)
+            val updatedDevice = deviceService.update(id, device)
+            call.respond(updatedDevice)
         }
 
         delete("{id?}") {

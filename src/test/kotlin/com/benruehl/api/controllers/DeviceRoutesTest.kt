@@ -68,6 +68,69 @@ class DeviceRoutesTest {
         }
     }
 
+    @Test
+    fun `POST device should save device to database`() = setupApplication { client ->
+        client.post("/devices") {
+            setBody(aDevice.toRequestBody())
+            contentType(Json)
+        }.apply {
+            assertEquals(1, deviceRepository.findAll().size)
+        }
+    }
+
+    @Test
+    fun `PUT device should return device`() = setupApplication({
+        deviceRepository.save(aDevice)
+    }) { client ->
+        val updatedDevice = aDevice.copy(title = "Some updated title")
+        client.put("/devices/${aDevice.id}") {
+            setBody(updatedDevice.toRequestBody())
+            contentType(Json)
+        }.apply {
+            val response = bodyDeserializedAs<QueryDeviceResponse>()
+            assertEquals(HttpStatusCode.OK, status)
+            assertEquals(updatedDevice.title, response.title)
+        }
+    }
+
+    @Test
+    fun `PUT device should save device to database when it exists`() = setupApplication({
+        deviceRepository.save(aDevice)
+    }) { client ->
+        val updatedDevice = aDevice.copy(title = "Some updated title")
+        client.put("/devices/${aDevice.id}") {
+            setBody(updatedDevice.toRequestBody())
+            contentType(Json)
+        }.apply {
+            assertEquals(updatedDevice.title, deviceRepository.find(aDevice.id!!)?.title)
+        }
+    }
+
+    @Test
+    fun `DELETE device should return ok when device exists`() = setupApplication({
+        deviceRepository.save(aDevice)
+    }) {
+        client.delete("/devices/${aDevice.id}").apply {
+            assertEquals(HttpStatusCode.OK, status)
+        }
+    }
+
+    @Test
+    fun `DELETE device should return NotFound when device does not exist`() = setupApplication {
+        client.delete("/devices/${aDevice.id}").apply {
+            assertEquals(HttpStatusCode.NotFound, status)
+        }
+    }
+
+    @Test
+    fun `DELETE device should remove device from database`() = setupApplication({
+        deviceRepository.save(aDevice)
+    }) {
+        client.delete("/devices/${aDevice.id}").apply {
+            assertEquals(0, deviceRepository.findAll().size)
+        }
+    }
+
     private val aDevice = Device(
         123,
         "Any Title",
