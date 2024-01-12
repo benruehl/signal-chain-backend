@@ -10,6 +10,7 @@ import io.ktor.server.application.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
+
 fun Route.deviceRouting() {
     val deviceService = DeviceService()
 
@@ -19,7 +20,7 @@ fun Route.deviceRouting() {
         }
 
         get("{id?}") {
-            val id: Int
+            val id: String
             try {
                 id = call.getIdParameter()
             } catch (e: IllegalArgumentException) {
@@ -43,7 +44,7 @@ fun Route.deviceRouting() {
         }
 
         put("{id?}") {
-            val id: Int
+            val id: String
             try {
                 id = call.getIdParameter()
             } catch (e: IllegalArgumentException) {
@@ -58,7 +59,7 @@ fun Route.deviceRouting() {
         }
 
         delete("{id?}") {
-            val id: Int
+            val id: String
             try {
                 id = call.getIdParameter()
             } catch (e: IllegalArgumentException) {
@@ -76,8 +77,5 @@ fun Route.deviceRouting() {
     }
 }
 
-private fun ApplicationCall.getIdParameter(): Int {
-    val idAsString = this.parameters["id"] ?: throw IllegalArgumentException("Missing id")
-    val id = idAsString.toIntOrNull() ?: throw IllegalArgumentException("Id is not an integer")
-    return id
-}
+private fun ApplicationCall.getIdParameter() =
+    this.parameters["id"] ?: throw IllegalArgumentException("Missing id")

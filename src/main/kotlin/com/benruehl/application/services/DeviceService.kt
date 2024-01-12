@@ -15,8 +15,9 @@ class DeviceService {
         return deviceRepository.findAll().map { it.mapToDto() }
     }
 
-    suspend fun find(id: Int): QueryDeviceResponse? {
-        return deviceRepository.find(id)?.mapToDto()
+    suspend fun find(id: String): QueryDeviceResponse? {
+        val parsedId = id.toIntOrNull() ?: throw Error("Id must be an integer. [id=$id]")
+        return deviceRepository.find(parsedId)?.mapToDto()
     }
 
     suspend fun create(device: SaveDeviceRequest): QueryDeviceResponse {
@@ -25,19 +26,21 @@ class DeviceService {
         return createdEntity.mapToDto()
     }
 
-    suspend fun update(id: Int, device: SaveDeviceRequest): QueryDeviceResponse {
-        val entity = device.mapToEntity().copy(id = id)
+    suspend fun update(id: String, device: SaveDeviceRequest): QueryDeviceResponse {
+        val parsedId = id.toIntOrNull() ?: throw Error("Id must be an integer. [id=$id]")
+        val entity = device.mapToEntity().copy(id = parsedId)
         val updatedEntity = deviceRepository.save(entity)
         return updatedEntity.mapToDto()
     }
 
-    suspend fun delete(id: Int): Boolean {
-        return deviceRepository.delete(id)
+    suspend fun delete(id: String): Boolean {
+        val parsedId = id.toIntOrNull() ?: throw Error("Id must be an integer. [id=$id]")
+        return deviceRepository.delete(parsedId)
     }
 
     private fun Device.mapToDto() = this.let {
         QueryDeviceResponse(
-            id = it.id ?: throw Exception("Attempted to return an entity without id to client!"),
+            id = it.id?.toString() ?: throw Exception("Attempted to return an entity without id to client!"),
             title = it.title,
             positionX = it.positionX,
             positionY = it.positionY,

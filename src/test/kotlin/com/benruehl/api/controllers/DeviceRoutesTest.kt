@@ -46,7 +46,7 @@ class DeviceRoutesTest {
         client.get("/devices/${aDevice.id}").apply {
             val response = bodyDeserializedAs<QueryDeviceResponse>()
             assertEquals(HttpStatusCode.OK, status)
-            assertEquals(aDevice.id, response.id)
+            assertEquals(aDevice.id.toString(), response.id)
             assertEquals(aDevice.title, response.title)
         }
     }
@@ -66,7 +66,7 @@ class DeviceRoutesTest {
         }.apply {
             val response = bodyDeserializedAs<QueryDeviceResponse>()
             assertEquals(HttpStatusCode.Created, status)
-            assertEquals(1, response.id)
+            assertEquals("1", response.id)
         }
     }
 

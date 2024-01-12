@@ -11,7 +11,7 @@ data class SaveDeviceRequest(
 
 @Serializable
 data class QueryDeviceResponse(
-    val id: Int,
+    val id: String,
     val title: String,
     val positionX: Float,
     val positionY: Float,
