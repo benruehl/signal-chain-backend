@@ -1,11 +1,13 @@
 package com.benruehl.api.controllers
 
+import com.benruehl.aDevice
 import com.benruehl.application.dtos.QueryDeviceResponse
 import com.benruehl.application.dtos.SaveDeviceRequest
 import com.benruehl.bodyDeserializedAs
 import com.benruehl.domain.entities.Device
 import com.benruehl.infrastructure.persistence.daos.DeviceDAO
 import com.benruehl.setupApplication
+import com.benruehl.toRequestBody
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
@@ -130,19 +132,4 @@ class DeviceRoutesTest {
             assertEquals(0, deviceRepository.findAll().size)
         }
     }
-
-    private val aDevice = Device(
-        123,
-        "Any Title",
-        100f,
-        100f,
-        incomingLinks = emptyList(),
-        outgoingLink = null
-    )
-
-    private fun Device.toRequestBody() = SaveDeviceRequest(
-        title = this.title,
-        positionX = this.positionX,
-        positionY = this.positionY
-    )
 }
