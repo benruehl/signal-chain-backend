@@ -14,5 +14,7 @@ data class QueryDeviceResponse(
     val id: Int,
     val title: String,
     val positionX: Float,
-    val positionY: Float
+    val positionY: Float,
+    val incomingLinks: List<QueryLinkResponse>,
+    val outgoingLink: QueryLinkResponse?,
 )

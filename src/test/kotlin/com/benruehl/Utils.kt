@@ -1,6 +1,7 @@
 package com.benruehl
 
 import com.benruehl.infrastructure.persistence.tables.Devices
+import com.benruehl.infrastructure.persistence.tables.Links
 import io.ktor.client.*
 import io.ktor.client.statement.*
 import io.ktor.serialization.kotlinx.json.*
@@ -37,8 +38,10 @@ fun setupApplication(
 
 private fun clearDatabase() {
     transaction {
+        SchemaUtils.drop(Links)
         SchemaUtils.drop(Devices)
         SchemaUtils.create(Devices)
+        SchemaUtils.create(Links)
     }
 }
 

@@ -1,6 +1,7 @@
 package com.benruehl.infrastructure.persistence
 
 import com.benruehl.infrastructure.persistence.tables.Devices
+import com.benruehl.infrastructure.persistence.tables.Links
 import kotlinx.coroutines.Dispatchers
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.SchemaUtils
@@ -13,6 +14,7 @@ fun configurePersistence() {
     val database = Database.connect(jdbcURL, driverClassName)
     transaction(database) {
         SchemaUtils.create(Devices)
+        SchemaUtils.create(Links)
     }
 }
 

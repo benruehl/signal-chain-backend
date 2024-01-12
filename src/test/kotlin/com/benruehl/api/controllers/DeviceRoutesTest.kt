@@ -135,7 +135,9 @@ class DeviceRoutesTest {
         123,
         "Any Title",
         100f,
-        100f
+        100f,
+        incomingLinks = emptyList(),
+        outgoingLink = null
     )
 
     private fun Device.toRequestBody() = SaveDeviceRequest(

@@ -1,8 +1,10 @@
 package com.benruehl.application.services
 
 import com.benruehl.application.dtos.QueryDeviceResponse
+import com.benruehl.application.dtos.QueryLinkResponse
 import com.benruehl.application.dtos.SaveDeviceRequest
 import com.benruehl.domain.entities.Device
+import com.benruehl.domain.entities.Link
 import com.benruehl.infrastructure.persistence.daos.DeviceDAO
 import java.lang.Exception
 
@@ -38,7 +40,17 @@ class DeviceService {
             id = it.id ?: throw Exception("Attempted to return an entity without id to client!"),
             title = it.title,
             positionX = it.positionX,
-            positionY = it.positionY
+            positionY = it.positionY,
+            incomingLinks = it.incomingLinks.map { l -> l.mapToDto() },
+            outgoingLink = it.outgoingLink?.mapToDto()
+        )
+    }
+
+    private fun Link.mapToDto() = this.let {
+        QueryLinkResponse(
+            id = it.id ?: throw Exception("Attempted to return an entity without id to client!"),
+            sourceDeviceId = it.sourceDeviceId,
+            targetDeviceId = it.targetDeviceId
         )
     }
 
@@ -47,7 +59,9 @@ class DeviceService {
             id = null,
             title = it.title,
             positionX = it.positionX,
-            positionY = it.positionY
+            positionY = it.positionY,
+            incomingLinks = emptyList(),
+            outgoingLink = null
         )
     }
 }
