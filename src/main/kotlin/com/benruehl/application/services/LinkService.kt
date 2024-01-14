@@ -17,8 +17,8 @@ class LinkService {
         val createdLink = linkRepository.save(
             Link(
                 id = null,
-                sourceDeviceId = link.sourceDeviceId,
-                targetDeviceId = link.targetDeviceId
+                sourceDeviceId = link.sourceDeviceId.toInt(),
+                targetDeviceId = link.targetDeviceId.toInt()
             )
         )
         return QueryLinkResponse(

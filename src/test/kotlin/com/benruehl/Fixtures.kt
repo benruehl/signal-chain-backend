@@ -36,6 +36,6 @@ fun Device.toRequestBody() = SaveDeviceRequest(
 )
 
 fun Link.toRequestBody() = CreateLinkRequest(
-    sourceDeviceId = this.sourceDeviceId,
-    targetDeviceId = this.targetDeviceId
+    sourceDeviceId = this.sourceDeviceId.toString(),
+    targetDeviceId = this.targetDeviceId.toString()
 )

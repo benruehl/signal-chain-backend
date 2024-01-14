@@ -52,8 +52,8 @@ class DeviceService {
     private fun Link.mapToDto() = this.let {
         QueryLinkResponse(
             id = it.id ?: throw Exception("Attempted to return an entity without id to client!"),
-            sourceDeviceId = it.sourceDeviceId,
-            targetDeviceId = it.targetDeviceId
+            sourceDeviceId = it.sourceDeviceId.toString(),
+            targetDeviceId = it.targetDeviceId.toString()
         )
     }
 
