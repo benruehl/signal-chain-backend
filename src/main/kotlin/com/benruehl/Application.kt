@@ -13,6 +13,7 @@ fun main() {
 
 fun Application.module() {
     configurePersistence()
+    configureCORS()
     configureSerialization()
     configureRouting()
 }
